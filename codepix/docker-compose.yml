@@ -5,7 +5,8 @@ services:
     build: .
     volumes:
       - .:/go/src/
-
+    ports:
+      - '8081:8081'
   db:
     image: postgres:12
     restart: always

@@ -7,9 +7,10 @@ import (
 )
 
 type Bank struct {
-	Base `json:"base" valid:"required"`
-	Code string `json:"code,omitempty" valid:"notnull"`
-	Name string `json:"name,omitempty" valid:"notnull"`
+	Base     `json:"base" valid:"required"`
+	Code     string     `json:"code,omitempty" valid:"notnull"`
+	Name     string     `json:"name,omitempty" valid:"notnull"`
+	Accounts []*Account `valid:"-"`
 }
 
 func (bank *Bank) isValid() error {
@@ -23,8 +24,8 @@ func (bank *Bank) isValid() error {
 
 func NewBank(code string, name string) (*Bank, error) {
 	bank := Bank{
-		Code: "",
-		Name: "",
+		Code: code,
+		Name: name,
 	}
 
 	bank.ID = uuid.NewV4().String()

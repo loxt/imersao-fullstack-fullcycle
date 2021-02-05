@@ -7,13 +7,21 @@ import (
 	"time"
 )
 
+type PixKeyRepository interface {
+	RegisterKey(pixKey *PixKey) (*PixKey, error)
+	FindKeyByKind(key string, kinda string) (*PixKey, error)
+	AddBank(bank *Bank) error
+	AddAccount(account *Account) error
+	FindAccount(id string) (*Account, error)
+}
+
 type PixKey struct {
 	Base      `json:"base" valid:"required"`
-	Kind      string   `json:"kind,omitempty" valid:"notnull"`
-	Key       string   `json:"key,omitempty" valid:"notnull"`
-	AccountID string   `json:"account_id,omitempty" valid:"notnull"`
+	Kind      string   `json:"kind" valid:"notnull"`
+	Key       string   `json:"key" valid:"notnull"`
+	AccountID string   `json:"account_id" valid:"notnull"`
 	Account   *Account `json:"account,omitempty" valid:"-"`
-	Status    string   `json:"status,omitempty" valid:"notnull"`
+	Status    string   `json:"status" valid:"notnull"`
 }
 
 func (pixKey *PixKey) isValid() error {

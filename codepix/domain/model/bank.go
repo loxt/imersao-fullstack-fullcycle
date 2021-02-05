@@ -8,8 +8,8 @@ import (
 
 type Bank struct {
 	Base     `json:"base" valid:"required"`
-	Code     string     `json:"code,omitempty" valid:"notnull"`
-	Name     string     `json:"name,omitempty" valid:"notnull"`
+	Code     string     `json:"code" valid:"notnull"`
+	Name     string     `json:"name" valid:"notnull"`
 	Accounts []*Account `valid:"-"`
 }
 

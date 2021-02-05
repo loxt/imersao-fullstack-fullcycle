@@ -8,9 +8,9 @@ import (
 
 type Account struct {
 	Base      `json:"base" valid:"required"`
-	OwnerName string    `json:"owner_name,omitempty" valid:"notnull"`
+	OwnerName string    `json:"owner_name" valid:"notnull"`
 	Bank      *Bank     `json:"bank,omitempty" valid:"-"`
-	Number    string    `json:"number,omitempty" valid:"notnull"`
+	Number    string    `json:"number" valid:"notnull"`
 	PixKeys   []*PixKey `valid:"-"`
 }
 

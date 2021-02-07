@@ -7,7 +7,8 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
-import { JoinColumn } from 'typeorm/browser';
+import { JoinColumn } from 'typeorm';
+import { BankAccount } from './bank-account.model';
 
 export enum PixKeyKind {
   cpf = 'cpf',
@@ -17,7 +18,7 @@ export enum PixKeyKind {
 @Entity({
   name: 'pix_keys',
 })
-export class BankAccount {
+export class PixKey {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

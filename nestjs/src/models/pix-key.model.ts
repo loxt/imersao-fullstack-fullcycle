@@ -3,25 +3,36 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
+import { JoinColumn } from 'typeorm/browser';
+
+export enum PixKeyKind {
+  cpf = 'cpf',
+  email = 'email',
+}
 
 @Entity({
-  name: 'bank_accounts',
+  name: 'pix_keys',
 })
 export class BankAccount {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
-  account_number: string;
+  key: string;
 
   @Column()
-  owner_name: string;
+  kind: PixKeyKind;
+
+  @ManyToOne(() => BankAccount)
+  @JoinColumn({ name: 'bank_account_id' })
+  bankAccount: BankAccount;
 
   @Column()
-  balance: number;
+  bank_account_id: string;
 
   @CreateDateColumn({ type: 'timestamp' })
   created_at: Date;
@@ -32,13 +43,5 @@ export class BankAccount {
       return;
     }
     this.id = uuidv4();
-  }
-
-  @BeforeInsert()
-  initBalance() {
-    if (this.balance) {
-      return;
-    }
-    this.balance = 0;
   }
 }

@@ -5,7 +5,7 @@ export class createBankAccountsTable1612717701170
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'bank-accounts',
+        name: 'bank_accounts',
         columns: [
           {
             name: 'id',

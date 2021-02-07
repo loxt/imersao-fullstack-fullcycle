@@ -10,8 +10,13 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
+.docker/dbdata
+
 # OS
 .DS_Store
+
+# Environment
+.env
 
 # Tests
 /coverage

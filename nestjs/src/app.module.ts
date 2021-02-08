@@ -8,6 +8,11 @@ import { BankAccountController } from './controllers/bank-account/bank-account.c
 import { ConsoleModule } from 'nestjs-console';
 import { FixturesCommand } from './fixtures/fixtures.command';
 import { PixKeyController } from './controllers/pix-key/pix-key.controller';
+import { join } from 'path';
+import { PixKey } from './models/pix-key.model';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { Transaction } from './models/transaction.model';
+import { TransactionController } from './controllers/transaction/transaction.controller';
 
 @Module({
   imports: [
@@ -22,9 +27,44 @@ import { PixKeyController } from './controllers/pix-key/pix-key.controller';
       database: process.env.TYPEORM_DATABASE,
       autoLoadEntities: true,
     }),
-    TypeOrmModule.forFeature([BankAccount]),
+    TypeOrmModule.forFeature([BankAccount, PixKey, Transaction]),
+    ClientsModule.register([
+      {
+        name: 'CODEPIX_PACKAGE',
+        transport: Transport.GRPC,
+        options: {
+          url: process.env.GRPC_URL,
+          package: 'github.com.loxt.codepix',
+          protoPath: [join(__dirname, 'protofiles/pixkey.proto')],
+        },
+      },
+    ]),
+    ClientsModule.register([
+      {
+        name: 'TRANSACTION_SERVICE',
+        transport: Transport.KAFKA,
+        options: {
+          client: {
+            clientId: process.env.KAFKA_CLIENT_ID,
+            brokers: [process.env.KAFKA_BROKER],
+          },
+          consumer: {
+            groupId:
+              !process.env.KAFKA_CONSUMER_GROUP_ID ||
+              process.env.KAFKA_CONSUMER_GROUP_ID === ''
+                ? `my-consumer-${Math.random()}`
+                : process.env.KAFKA_CONSUMER_GROUP_ID,
+          },
+        },
+      },
+    ]),
   ],
-  controllers: [AppController, BankAccountController, PixKeyController],
+  controllers: [
+    AppController,
+    BankAccountController,
+    PixKeyController,
+    TransactionController,
+  ],
   providers: [AppService, FixturesCommand],
 })
 export class AppModule {}

@@ -80,6 +80,7 @@ func (k *KafkaProcessor) processTransaction(msg *ckafka.Message) error {
 		transaction.PixKeyTo,
 		transaction.PixKeyKindTo,
 		transaction.Description,
+		transaction.ID,
 	)
 
 	if err != nil {

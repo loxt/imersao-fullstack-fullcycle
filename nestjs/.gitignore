@@ -1,7 +1,8 @@
 # compiled output
 /dist
+/dist-bbx
+/dist-cte
 /node_modules
-
 # Logs
 logs
 *.log
@@ -11,6 +12,9 @@ yarn-error.log*
 lerna-debug.log*
 
 .docker/dbdata
+.docker/dbdatabbx
+.docker/dbdatacte
+
 
 # OS
 .DS_Store

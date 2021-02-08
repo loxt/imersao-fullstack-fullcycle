@@ -13,6 +13,7 @@ import {
 import { ClientKafka, MessagePattern, Payload } from '@nestjs/microservices';
 import { Producer } from '@nestjs/microservices/external/kafka.interface';
 import { InjectRepository } from '@nestjs/typeorm';
+import { TransactionDTO } from 'src/dto/transaction.dto';
 import { BankAccount } from 'src/models/bank-account.model';
 import { PixKey } from 'src/models/pix-key.model';
 import {
@@ -21,7 +22,6 @@ import {
   TransactionStatus,
 } from 'src/models/transaction.model';
 import { Repository } from 'typeorm';
-import { TransactionDTO } from '../../dto/transaction.dto';
 
 @Controller('bank-accounts/:bankAccountId/transactions')
 export class TransactionController implements OnModuleInit, OnModuleDestroy {
@@ -130,7 +130,9 @@ export class TransactionController implements OnModuleInit, OnModuleDestroy {
       status: TransactionStatus.completed,
     });
 
-    this.transactionRepo.save(transaction);
+    console.log(transaction);
+
+    await this.transactionRepo.save(transaction);
 
     const sendData = {
       ...data,
@@ -163,7 +165,7 @@ export class TransactionController implements OnModuleInit, OnModuleDestroy {
       id: data.id,
       accountId: transaction.bank_account_id,
       amount: Math.abs(transaction.amount),
-      pixKeyto: transaction.pix_key_key,
+      pixKeyTo: transaction.pix_key_key,
       pixKeyKindTo: transaction.pix_key_kind,
       description: transaction.description,
       status: TransactionStatus.completed,
